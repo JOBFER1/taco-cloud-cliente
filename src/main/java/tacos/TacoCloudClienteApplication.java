@@ -1,5 +1,7 @@
 package tacos;
 
+import java.util.LinkedHashMap;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.extern.slf4j.Slf4j;
-import tacos.Ingredient.Type;
 
 @SpringBootApplication
 @Slf4j
@@ -62,22 +63,22 @@ public class TacoCloudClienteApplication {
 //			ingredients = (LinkedHashMap<String, Ingredient>) restTemplate().getForObject(url, LinkedHashMap.class);
 //			log.info("All ingredients:" + ingredients);
 			
-			log.info("----------------------- PUT -------------------------");
-			
-			Ingredient oIng = new Ingredient("FLTO","Alcachofas", Type.WRAP); 
-			restTemplate().put("http://localhost:8086/api/ingredients/{id}", oIng, oIng.getId());
-
-			Ingredient ing = restTemplate().getForObject("http://localhost:8086/api/ingredients/{id}", Ingredient.class, "FLTO");
-			log.info("Ingrediente modificado:  " + ing + "\n");
-			
-//			log.info("----------------------- DELETE -------------------------");
+//			log.info("----------------------- PUT -------------------------");
 //			
-//			restTemplate().delete("http://localhost:8086/api/ingredients/{id}","FLTO");
-//			
-//			LinkedHashMap<String, Ingredient> ingredients = new LinkedHashMap<String,Ingredient>();
-//			String url = "http://localhost:8086/api/ingredients";
-//			ingredients = (LinkedHashMap<String, Ingredient>) restTemplate().getForObject(url, LinkedHashMap.class);
-//			log.info("All ingredients:" + ingredients);
+//			Ingredient oIng = new Ingredient("FLTO","Alcachofas", Type.WRAP); 
+//			restTemplate().put("http://localhost:8086/api/ingredients/{id}", oIng, oIng.getId());
+//
+//			Ingredient ing = restTemplate().getForObject("http://localhost:8086/api/ingredients/{id}", Ingredient.class, "FLTO");
+//			log.info("Ingrediente modificado:  " + ing + "\n");
+			
+			log.info("----------------------- DELETE -------------------------");
+			
+			restTemplate().delete("http://localhost:8086/api/ingredients/{id}","FLTO");
+			
+			LinkedHashMap<String, Ingredient> ingredients = new LinkedHashMap<String,Ingredient>();
+			String url = "http://localhost:8086/api/ingredients";
+			ingredients = (LinkedHashMap<String, Ingredient>) restTemplate().getForObject(url, LinkedHashMap.class);
+			log.info("All ingredients:" + ingredients);
 
 			
 //			log.info("----------------------- POST -------------------------");
