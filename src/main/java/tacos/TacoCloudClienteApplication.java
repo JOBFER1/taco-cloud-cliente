@@ -1,13 +1,16 @@
 package tacos;
 
 import java.net.URI;
-import java.util.LinkedHashMap;
+import java.util.Collection;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.client.Traverson;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.extern.slf4j.Slf4j;
@@ -84,52 +87,54 @@ public class TacoCloudClienteApplication {
 //			log.info("All ingredients:" + ingredients);
 
 			
-			log.info("----------------------- POST -------------------------");
+//			log.info("----------------------- POST -------------------------");
+//			
+////			-----FORMA 1
+//			
+//			Ingredient oIng = new Ingredient("PERS","Peras", Type.WRAP);
+//			Ingredient nuevoIng = restTemplate().postForObject("http://localhost:8086/api/ingredients", oIng, Ingredient.class);
+//			log.info("nuevoIng:" + nuevoIng);
+//			
+////			-----FORMA 2			
+//			
+//			Ingredient oIng2 = new Ingredient("RBNS","Rabanos", Type.WRAP);
+//			URI uri = restTemplate().postForLocation("http://localhost:8086/api/ingredients",oIng2);
+//			log.info("URI: " + uri + "\n");
+//			
+////			-----FORMA 3						
+//			
+//			Ingredient oIng3 = new Ingredient("ALCP","Alcaparras", Type.WRAP);
+//			ResponseEntity<Ingredient> responseEntity = restTemplate().postForEntity("http://localhost:8086/api/ingredients", oIng3, Ingredient.class);
+//			log.info("New resource created at " + responseEntity.getHeaders().getLocation());
+//			Ingredient ing = responseEntity.getBody();
+//			log.info("Ingredient: " + ing + "\n");
+//			
+//			LinkedHashMap<String, Ingredient> ingredients = new LinkedHashMap<String,Ingredient>();
+//			String url = "http://localhost:8086/api/ingredients";
+//			ingredients = (LinkedHashMap<String, Ingredient>) restTemplate().getForObject(url, LinkedHashMap.class);
+//			log.info("All ingredients:" + ingredients);			
 			
-//			-----FORMA 1
-			
-			Ingredient oIng = new Ingredient("PERS","Peras", Type.WRAP);
-			Ingredient nuevoIng = restTemplate().postForObject("http://localhost:8086/api/ingredients", oIng, Ingredient.class);
-			log.info("nuevoIng:" + nuevoIng);
-			
-//			-----FORMA 2			
-			
-			Ingredient oIng2 = new Ingredient("RBNS","Rabanos", Type.WRAP);
-			URI uri = restTemplate().postForLocation("http://localhost:8086/api/ingredients",oIng2);
-			log.info("URI: " + uri + "\n");
-			
-//			-----FORMA 3						
-			
-			Ingredient oIng3 = new Ingredient("ALCP","Alcaparras", Type.WRAP);
-			ResponseEntity<Ingredient> responseEntity = restTemplate().postForEntity("http://localhost:8086/api/ingredients", oIng3, Ingredient.class);
-			log.info("New resource created at " + responseEntity.getHeaders().getLocation());
-			Ingredient ing = responseEntity.getBody();
-			log.info("Ingredient: " + ing + "\n");
-			
-			LinkedHashMap<String, Ingredient> ingredients = new LinkedHashMap<String,Ingredient>();
-			String url = "http://localhost:8086/api/ingredients";
-			ingredients = (LinkedHashMap<String, Ingredient>) restTemplate().getForObject(url, LinkedHashMap.class);
-			log.info("All ingredients:" + ingredients);			
-			
-//			log.info("----------------------- TRAVERSON -------------------------");
+			log.info("----------------------- TRAVERSON -------------------------");
 			
 //			-----Ejemplo 1
-//			
-//			Traverson traverson = new Traverson(URI.create("http://localhost:8086/api"), MediaTypes.HAL_JSON);
-//			
-//			ParameterizedTypeReference<CollectionModel<Ingredient>> ingredientType = new ParameterizedTypeReference<CollectionModel<Ingredient>>() {};
-//			CollectionModel<Ingredient> ingredientRes = traverson.follow("ingredients").toObject(ingredientType);
-//			Collection<Ingredient> ingredients = ingredientRes.getContent();
-//			log.info("Ingredientes: " + ingredients + "\n");
+			
+			Traverson traverson = new Traverson(URI.create("http://localhost:8086/api"), MediaTypes.HAL_JSON);
+			
+			ParameterizedTypeReference<CollectionModel<Ingredient>> ingredientType = new ParameterizedTypeReference<CollectionModel<Ingredient>>() {};
+			CollectionModel<Ingredient> ingredientRes = traverson.follow("ingredients").toObject(ingredientType);
+			Collection<Ingredient> ingredients = ingredientRes.getContent();
+			log.info("Ingredientes: " + ingredients + "\n");
 
 			
 //			Ejemplo 2
 			
-//			Traverson traverson = new Traverson(URI.create("http://localhost:8086/api"), MediaTypes.HAL_JSON);
+			Traverson traverson2 = new Traverson(URI.create("http://localhost:8086/api"), MediaTypes.HAL_JSON);
 			
-//			Ingredient oIng3 = new Ingredient("ACLG","Acelgas", Type.WRAP);
-//			String ingredientsUrl = traverson.follow("ingredients").asLink().getHref();
-//			restTemplate().postForObject(ingredientsUrl, oIng3,	Ingredient.class);
+			
+			String ingredientsUrl = traverson2.follow("ingredients").asLink().getHref();
+			
+			Ingredient oIng3 = new Ingredient("ACLG","Acelgas", Type.WRAP);
+			restTemplate().postForObject(ingredientsUrl, oIng3,	Ingredient.class);
 					
 		};
 	}
