@@ -55,10 +55,8 @@ public class TacoCloudClienteApplication {
 			
 //			-----FORMA 4
 			
-			ResponseEntity<Ingredient> responseEntity =
-					restTemplate().getForEntity("http://localhost:8086/api/ingredients/{id}",
-					Ingredient.class, "CHED");
-					log.info("\tFetched time: " + responseEntity.getHeaders().getDate());
+			ResponseEntity<Ingredient> responseEntity = restTemplate().getForEntity("http://localhost:8086/api/ingredients/{id}",Ingredient.class, "CHED");
+			log.info("\tFetched time: " + responseEntity.getHeaders().getDate());
 			Ingredient ing4 = responseEntity.getBody();
 			log.info("Ingredient FORMA 4:  " + ing4);
 			log.info("");
