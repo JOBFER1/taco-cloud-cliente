@@ -1,14 +1,17 @@
 package tacos;
 
+import java.net.URI;
 import java.util.LinkedHashMap;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.extern.slf4j.Slf4j;
+import tacos.Ingredient.Type;
 
 @SpringBootApplication
 @Slf4j
@@ -71,42 +74,42 @@ public class TacoCloudClienteApplication {
 //			Ingredient ing = restTemplate().getForObject("http://localhost:8086/api/ingredients/{id}", Ingredient.class, "FLTO");
 //			log.info("Ingrediente modificado:  " + ing + "\n");
 			
-			log.info("----------------------- DELETE -------------------------");
-			
-			restTemplate().delete("http://localhost:8086/api/ingredients/{id}","FLTO");
-			
-			LinkedHashMap<String, Ingredient> ingredients = new LinkedHashMap<String,Ingredient>();
-			String url = "http://localhost:8086/api/ingredients";
-			ingredients = (LinkedHashMap<String, Ingredient>) restTemplate().getForObject(url, LinkedHashMap.class);
-			log.info("All ingredients:" + ingredients);
-
-			
-//			log.info("----------------------- POST -------------------------");
+//			log.info("----------------------- DELETE -------------------------");
 //			
-////			-----FORMA 1
-//			
-//			Ingredient oIng = new Ingredient("ALCF","Alcachofas", Type.WRAP);
-//			Ingredient nuevoIng = restTemplate().postForObject("http://localhost:8086/api/ingredients", oIng, Ingredient.class);
-//			log.info("nuevoIng:" + nuevoIng);
+//			restTemplate().delete("http://localhost:8086/api/ingredients/{id}","FLTO");
 //			
 //			LinkedHashMap<String, Ingredient> ingredients = new LinkedHashMap<String,Ingredient>();
 //			String url = "http://localhost:8086/api/ingredients";
 //			ingredients = (LinkedHashMap<String, Ingredient>) restTemplate().getForObject(url, LinkedHashMap.class);
 //			log.info("All ingredients:" + ingredients);
-//			
-////			-----FORMA 2			
-//			
-//			Ingredient oIng2 = new Ingredient("ALCF","Alcachofas", Type.WRAP);
-//			URI uri = restTemplate().postForLocation("http://localhost:8086/api/ingredients",oIng2);
-//			log.info("URI: " + uri + "\n");
-//			
-////			-----FORMA 3						
-//			
-//			Ingredient oIng3 = new Ingredient("ALCF","Alcachofas", Type.WRAP);
-//			ResponseEntity<Ingredient> responseEntity = restTemplate().postForEntity("http://localhost:8086/api/ingredients", oIng3, Ingredient.class);
-//			log.info("New resource created at " + responseEntity.getHeaders().getLocation());
-//			Ingredient ing = responseEntity.getBody();
-//			log.info("Ingredient: " + ing + "\n");
+
+			
+			log.info("----------------------- POST -------------------------");
+			
+//			-----FORMA 1
+			
+			Ingredient oIng = new Ingredient("PERS","Peras", Type.WRAP);
+			Ingredient nuevoIng = restTemplate().postForObject("http://localhost:8086/api/ingredients", oIng, Ingredient.class);
+			log.info("nuevoIng:" + nuevoIng);
+			
+//			-----FORMA 2			
+			
+			Ingredient oIng2 = new Ingredient("RBNS","Rabanos", Type.WRAP);
+			URI uri = restTemplate().postForLocation("http://localhost:8086/api/ingredients",oIng2);
+			log.info("URI: " + uri + "\n");
+			
+//			-----FORMA 3						
+			
+			Ingredient oIng3 = new Ingredient("ALCP","Alcaparras", Type.WRAP);
+			ResponseEntity<Ingredient> responseEntity = restTemplate().postForEntity("http://localhost:8086/api/ingredients", oIng3, Ingredient.class);
+			log.info("New resource created at " + responseEntity.getHeaders().getLocation());
+			Ingredient ing = responseEntity.getBody();
+			log.info("Ingredient: " + ing + "\n");
+			
+			LinkedHashMap<String, Ingredient> ingredients = new LinkedHashMap<String,Ingredient>();
+			String url = "http://localhost:8086/api/ingredients";
+			ingredients = (LinkedHashMap<String, Ingredient>) restTemplate().getForObject(url, LinkedHashMap.class);
+			log.info("All ingredients:" + ingredients);			
 			
 //			log.info("----------------------- TRAVERSON -------------------------");
 			
