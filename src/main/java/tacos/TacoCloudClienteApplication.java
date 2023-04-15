@@ -1,19 +1,13 @@
 package tacos;
 
-import java.net.URI;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import lombok.extern.slf4j.Slf4j;
+import tacos.Ingredient.Type;
 
 @SpringBootApplication
 @Slf4j
@@ -30,52 +24,52 @@ public class TacoCloudClienteApplication {
 	@Bean
 	public CommandLineRunner fetchIngredients() {
 		return args -> {
-			log.info("----------------------- GET -------------------------");
-			log.info("GETTING INGREDIENT BY ID");
-
-//			-----FORMA 1
-			
-			Ingredient ing = restTemplate().getForObject("http://localhost:8086/api/ingredients/{id}", Ingredient.class, "CHED");
-			log.info("Ingredient FORMA 1:  " + ing);
-
-//			----- FORMA 2
-			
-			Map<String, String> urlVariables = new HashMap<>();
-			urlVariables.put("id", "CHED");
-			Ingredient ing2 = restTemplate().getForObject("http://localhost:8086/api/ingredients/{id}",Ingredient.class, urlVariables);	
-			log.info("Ingredient FORMA 2:  " + ing2);
-			
-//			-----FORMA 3
-			
-			Map<String, String> urlVariables2 = new HashMap<>();
-			urlVariables2.put("id", "CHED");
-			URI uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8086/api/ingredients/{id}").build(urlVariables2);
-			Ingredient ing3 = restTemplate().getForObject(uri, Ingredient.class);
-			log.info("Ingredient FORMA 3:  " + ing3);
-			
-//			-----FORMA 4
-			
-			ResponseEntity<Ingredient> responseEntity = restTemplate().getForEntity("http://localhost:8086/api/ingredients/{id}",Ingredient.class, "CHED");
-			log.info("\tFetched time: " + responseEntity.getHeaders().getDate());
-			Ingredient ing4 = responseEntity.getBody();
-			log.info("Ingredient FORMA 4:  " + ing4);
-			log.info("");
-					
-//			-----
-			
-			LinkedHashMap<String, Ingredient> ingredients = new LinkedHashMap<String,Ingredient>();
-			String url = "http://localhost:8086/api/ingredients";
-			ingredients = (LinkedHashMap<String, Ingredient>) restTemplate().getForObject(url, LinkedHashMap.class);
-			log.info("All ingredients:" + ingredients);
-			
-//			log.info("----------------------- PUT -------------------------");
-//			
-//			Ingredient oIng = new Ingredient("FLTO","Alcachofas", Type.WRAP); 
-//			restTemplate().put("http://localhost:8086/api/ingredients/{id}", oIng, oIng.getId());
+//			log.info("----------------------- GET -------------------------");
+//			log.info("GETTING INGREDIENT BY ID");
 //
-//			Ingredient ing = restTemplate().getForObject("http://localhost:8086/api/ingredients/{id}", Ingredient.class, "FLTO");
-//			log.info("Ingrediente modificado:  " + ing + "\n");
+////			-----FORMA 1
 //			
+//			Ingredient ing = restTemplate().getForObject("http://localhost:8086/api/ingredients/{id}", Ingredient.class, "CHED");
+//			log.info("Ingredient FORMA 1:  " + ing);
+//
+////			----- FORMA 2
+//			
+//			Map<String, String> urlVariables = new HashMap<>();
+//			urlVariables.put("id", "CHED");
+//			Ingredient ing2 = restTemplate().getForObject("http://localhost:8086/api/ingredients/{id}",Ingredient.class, urlVariables);	
+//			log.info("Ingredient FORMA 2:  " + ing2);
+//			
+////			-----FORMA 3
+//			
+//			Map<String, String> urlVariables2 = new HashMap<>();
+//			urlVariables2.put("id", "CHED");
+//			URI uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8086/api/ingredients/{id}").build(urlVariables2);
+//			Ingredient ing3 = restTemplate().getForObject(uri, Ingredient.class);
+//			log.info("Ingredient FORMA 3:  " + ing3);
+//			
+////			-----FORMA 4
+//			
+//			ResponseEntity<Ingredient> responseEntity = restTemplate().getForEntity("http://localhost:8086/api/ingredients/{id}",Ingredient.class, "CHED");
+//			log.info("\tFetched time: " + responseEntity.getHeaders().getDate());
+//			Ingredient ing4 = responseEntity.getBody();
+//			log.info("Ingredient FORMA 4:  " + ing4);
+//			log.info("");
+//					
+////			-----
+//			
+//			LinkedHashMap<String, Ingredient> ingredients = new LinkedHashMap<String,Ingredient>();
+//			String url = "http://localhost:8086/api/ingredients";
+//			ingredients = (LinkedHashMap<String, Ingredient>) restTemplate().getForObject(url, LinkedHashMap.class);
+//			log.info("All ingredients:" + ingredients);
+			
+			log.info("----------------------- PUT -------------------------");
+			
+			Ingredient oIng = new Ingredient("FLTO","Alcachofas", Type.WRAP); 
+			restTemplate().put("http://localhost:8086/api/ingredients/{id}", oIng, oIng.getId());
+
+			Ingredient ing = restTemplate().getForObject("http://localhost:8086/api/ingredients/{id}", Ingredient.class, "FLTO");
+			log.info("Ingrediente modificado:  " + ing + "\n");
+			
 //			log.info("----------------------- DELETE -------------------------");
 //			
 //			restTemplate().delete("http://localhost:8086/api/ingredients/{id}","FLTO");
